@@ -7,6 +7,7 @@ import Home from '../screens/Home';
 import Register from '../screens/Register';
 import Chat from '../screens/Chat';
 import Glucose from '../screens/Glucose';
+import BloodPre from '../screens/BloodPre';
 import {TapGestureHandler} from 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
@@ -15,7 +16,7 @@ function MainStackNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Glucose"
+        initialRouteName="BloodPre"
         screenOptions={{
           headerShown: TapGestureHandler,
         }}>
@@ -48,6 +49,11 @@ function MainStackNavigator() {
           name="Chat"
           options={{headerShown: false}}
           component={Chat}
+        />
+        <Stack.Screen
+          name="BloodPre"
+          options={{headerShown: false}}
+          component={BloodPre}
         />
       </Stack.Navigator>
     </NavigationContainer>
