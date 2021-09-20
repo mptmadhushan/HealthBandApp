@@ -61,7 +61,7 @@ export default function Home({navigation}) {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => console.log('hello')}
+            onPress={() => navigation.navigate('Glucose')}
             style={styles.slide1}>
             <View style={styles.centerFlex}>
               <Image
@@ -78,7 +78,7 @@ export default function Home({navigation}) {
         </View>
         <View style={styles.rowNorm2}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('PlanBuilderUpload')}
+            onPress={() => navigation.navigate('Glucose')}
             style={styles.slide1}>
             <View style={styles.centerFlex}>
               <Image
