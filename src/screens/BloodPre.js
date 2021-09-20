@@ -2,6 +2,7 @@ import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 
 import {icons, images, SIZES, COLORS, FONTS} from '../helpers';
+import LinearGradient from 'react-native-linear-gradient';
 
 import {
   LineChart,
@@ -13,7 +14,12 @@ import {
 } from 'react-native-chart-kit';
 export default function Glucose() {
   return (
-    <View style={styles.mainBody}>
+    <LinearGradient
+      colors={[COLORS.black, COLORS.primary, COLORS.black]}
+      style={styles.mainBody}
+      start={{x: 0, y: 0.5}}
+      end={{x: 1, y: 0.5}}
+      locations={[0, 0.7, 0.9]}>
       <Text style={styles.title}>Blood Pressure Info</Text>
       <LineChart
         data={{
@@ -109,7 +115,7 @@ export default function Glucose() {
           <Text style={styles.title2}>109</Text>
         </View>
       </View>
-    </View>
+    </LinearGradient>
   );
 }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 
 import {icons, images, SIZES, COLORS, FONTS} from '../helpers';
+import LinearGradient from 'react-native-linear-gradient';
 
 import {
   LineChart,
@@ -13,7 +14,13 @@ import {
 } from 'react-native-chart-kit';
 export default function Glucose() {
   return (
-    <View style={styles.mainBody}>
+    // <View style={styles.mainBody}>
+    <LinearGradient
+      colors={[COLORS.black, COLORS.primary, COLORS.black]}
+      style={styles.mainBody}
+      start={{x: 0, y: 0.5}}
+      end={{x: 1, y: 0.5}}
+      locations={[0, 0.7, 0.9]}>
       <Text style={styles.title}>SPO2 Info</Text>
       <LineChart
         data={{
@@ -113,7 +120,8 @@ export default function Glucose() {
           <Text style={styles.title2}>97</Text>
         </View>
       </View>
-    </View>
+    </LinearGradient>
+    // </View>
   );
 }
 
@@ -150,19 +158,27 @@ const styles = StyleSheet.create({
     width: SIZES.width * 0.3,
     height: SIZES.width * 0.3,
     borderRadius: 16,
+    shadowColor: COLORS.secondary,
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 0.84,
+    elevation: 15,
   },
   mainBody: {
     flex: 1,
     alignItems: 'center',
   },
   title: {
-    color: COLORS.black,
+    color: COLORS.white,
     fontWeight: 'bold',
     marginLeft: SIZES.width * 0.06,
     fontSize: 25,
   },
   title1: {
-    color: COLORS.black,
+    color: COLORS.white,
     fontWeight: 'bold',
     fontSize: 17,
     width: SIZES.width * 0.2,
