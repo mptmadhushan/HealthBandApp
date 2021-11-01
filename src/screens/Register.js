@@ -20,52 +20,52 @@ import {
 import {icons, images, SIZES, COLORS, FONTS} from '../helpers';
 import Toast from 'react-native-simple-toast';
 import APIKit, {setClientToken} from '../helpers/apiKit';
+import {authRegAPI} from '../api/authRegAPI';
 
 import AsyncStorage from '@react-native-community/async-storage';
 const RegisterScreen = ({navigation}) => {
   const [userEmail, setUserEmail] = useState('');
   const [userName, setUserName] = useState('');
   const [userPassword, setUserPassword] = useState('');
+  const [userPasswordConf, setUserPasswordConf] = useState('');
   const [loading, setLoading] = useState(false);
   const [errortext, setErrortext] = useState('');
   const [userNameError, setUserNameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
   const passwordInputRef = createRef();
-  const storeData = async value => {
-    try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem('@storage_Key', jsonValue);
-      navigation.navigate('LogIn');
-    } catch (e) {
-      // saving error
-    }
+
+  const showToast = message => {
+    Toast.showWithGravity(message, Toast.SHORT, Toast.TOP);
   };
-  const onPressLogin = () => {
-    const email = userEmail;
-    const password = userPassword;
-    const username = userName;
-    const roles = ['admin'];
-    const payload = {username, password, email, roles};
-    console.log('send data', payload);
-
-    const onSuccess = ({data}) => {
-      setLoading(false);
-      storeData(data);
-      console.log('suc', data);
+  const onPressReg = () => {
+    const payload = {
+      username: userName,
+      email: userEmail,
+      password: userPassword,
+      roles: ['user'],
     };
 
-    const onFailure = error => {
-      console.log('error', error);
-      setLoading(false);
-
-      // this.setState({errors: error.response.data, isLoading: false});
-    };
-
-    // Show spinner when call is made
     setLoading(true);
-
-    APIKit.post('auth/signUp', payload).then(onSuccess).catch(onFailure);
+    console.log(payload);
+    authRegAPI(payload)
+      .then(response => {
+        if (response.error) {
+          console.log('error__<', response.error);
+          showToast('try again');
+          return;
+        }
+        const {data} = response;
+        console.log('res', response.data);
+        console.log('token', data.access);
+        navigation.navigate('Login');
+      })
+      .catch(error => {
+        console.log('error-->', error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
   return (
     <ImageBackground
@@ -111,7 +111,7 @@ const RegisterScreen = ({navigation}) => {
                   userNameError ? styles.inputStyleError : '',
                 ]}
                 onChangeText={UserName => setUserName(UserName)}
-                placeholder="First Name"
+                placeholder="User Name"
                 placeholderTextColor={COLORS.white}
                 autoCapitalize="none"
                 keyboardType="email-address"
@@ -140,7 +140,7 @@ const RegisterScreen = ({navigation}) => {
                   userNameError ? styles.inputStyleError : '',
                 ]}
                 onChangeText={UserEmail => setUserEmail(UserEmail)}
-                placeholder="Last Name"
+                placeholder="Email"
                 placeholderTextColor={COLORS.white}
                 autoCapitalize="none"
                 keyboardType="email-address"
@@ -196,7 +196,7 @@ const RegisterScreen = ({navigation}) => {
             <TouchableOpacity
               style={styles.buttonStyle}
               activeOpacity={0.5}
-              onPress={() => onPressLogin()}>
+              onPress={() => onPressReg()}>
               <Text style={styles.buttonTextStyle}>Register</Text>
             </TouchableOpacity>
           </View>

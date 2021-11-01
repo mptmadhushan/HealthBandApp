@@ -3,7 +3,7 @@
 // https://aboutreact.com/react-native-login-and-signup/
 
 // Import React and Component
-import React, {useState, createRef} from 'react';
+import React, {useState, createRef, useEffect} from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -19,9 +19,12 @@ import {
 } from 'react-native';
 import {icons, images, SIZES, COLORS, FONTS} from '../helpers';
 import Toast from 'react-native-simple-toast';
-import APIKit, {setClientToken} from '../helpers/apiKit';
+import {login} from '../api/authAPI';
+import {storeUserToken, getUserToken} from '../shared/asyncStorage';
+import {setClientToken} from '../shared/axios';
+import {useDispatch} from 'react-redux';
+import {authSuccess} from '../redux/authSlice';
 
-import AsyncStorage from '@react-native-community/async-storage';
 const LoginScreen = ({navigation}) => {
   const [userEmail, setUserEmail] = useState('');
   const [userPassword, setUserPassword] = useState('');
@@ -31,39 +34,53 @@ const LoginScreen = ({navigation}) => {
   const [passwordError, setPasswordError] = useState(false);
 
   const passwordInputRef = createRef();
-  const storeData = async value => {
-    try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem('@storage_Key', jsonValue);
-      navigation.navigate('Home');
-    } catch (e) {
-      // saving error
-    }
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    getUserToken().then(token => {
+      if (token) {
+        setClientToken(token);
+        dispatch(authSuccess(token));
+        navigation.navigate('Home');
+      }
+    });
+  });
+  const showToast = message => {
+    Toast.showWithGravity(message, Toast.SHORT, Toast.TOP);
   };
   const onPressLogin = () => {
-    const username = userEmail;
-    const password = userPassword;
-    const payload = {username, password};
-    console.log('send data', payload);
-    navigation.navigate('Home');
+    const payload = {
+      username: userEmail,
+      password: userPassword,
+    };
+    console.log(payload);
+    setLoading(true);
 
-    // const onSuccess = ({data}) => {
-    //   setLoading(false);
-    //   storeData(data);
-    //   console.log('suc', data);
-    // };
+    login(payload)
+      .then(response => {
+        if (response.error) {
+          console.log('error__<', response.error);
+          showToast('try again');
+          return;
+        }
+        const {data} = response;
+        console.log('res', response.data);
 
-    // const onFailure = error => {
-    //   console.log('error', error);
-    //   setLoading(false);
+        console.log('token', data.accessToken);
+        setClientToken(data.accessToken);
+        storeUserToken(data.accessToken).then(result =>
+          console.log('Remove me if not needed', result),
+        );
+        navigation.navigate('Home');
+      })
+      .catch(error => {
+        console.log('error-->', error);
 
-    //   // this.setState({errors: error.response.data, isLoading: false});
-    // };
-
-    // // Show spinner when call is made
-    // setLoading(true);
-
-    // APIKit.post('/auth/signin', payload).then(onSuccess).catch(onFailure);
+        // showToast(error.responses);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
   return (
     <ImageBackground

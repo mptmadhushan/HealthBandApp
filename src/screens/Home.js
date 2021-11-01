@@ -46,7 +46,7 @@ export default function Home({navigation}) {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Chat')}
+            onPress={() => navigation.navigate('BloodPre')}
             style={styles.slide1}>
             <View style={styles.centerFlex}>
               <Image
@@ -78,7 +78,7 @@ export default function Home({navigation}) {
         </View>
         <View style={styles.rowNorm2}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Glucose')}
+            onPress={() => navigation.navigate('Instruction')}
             style={styles.slide1}>
             <View style={styles.centerFlex}>
               <Image
@@ -108,7 +108,7 @@ export default function Home({navigation}) {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => console.log('hello')}
+            onPress={() => navigation.navigate('SPO2')}
             style={styles.slide1}>
             <View style={styles.centerFlex}>
               <Image

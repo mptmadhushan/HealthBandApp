@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 
 import {icons, images, SIZES, COLORS, FONTS} from '../helpers';
@@ -12,7 +12,55 @@ import {
   ContributionGraph,
   StackedBarChart,
 } from 'react-native-chart-kit';
+import {getSPO2} from '../api/getSPO2';
+import {getBlood} from '../api/getBlood';
+
 export default function Glucose() {
+  const [spo2, setSpo2] = useState();
+  const [resp, setResp] = useState();
+  const [spo2d, setSpod2d] = useState();
+  const [blood, setBlood] = useState();
+  const [blood2, setBlood2] = useState();
+  useEffect(() => {
+    getSPO2()
+      .then(response => {
+        if (response.error) {
+          console.log('error', response.error);
+          // showToast(response.error);
+          return;
+        }
+        const {data} = response;
+        console.log(data);
+
+        setResp(data);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+      .finally(() => {
+        // setLoading(false);
+      });
+    getBlood()
+      .then(response => {
+        if (response.error) {
+          console.log('error', response.error);
+          // showToast(response.error);
+          return;
+        }
+        const {data} = response;
+        const newArray = data.map(element => element.labels);
+        const newArray2 = data.map(element => element.datasets);
+        setBlood(newArray);
+        setBlood2(newArray2);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+      .finally(() => {
+        // setLoading(false);
+      });
+    // handlePlay();
+  }, []);
   return (
     // <View style={styles.mainBody}>
     <LinearGradient
@@ -22,84 +70,69 @@ export default function Glucose() {
       end={{x: 1, y: 0.5}}
       locations={[0, 0.7, 0.9]}>
       <Text style={styles.title}>SPO2 Info</Text>
-      <LineChart
-        data={{
-          labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-          datasets: [
-            {
-              data: [
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-              ],
+      {blood2 ? (
+        <LineChart
+          data={{
+            labels: blood,
+            datasets: [
+              {
+                data: blood2,
+              },
+            ],
+          }}
+          width={SIZES.width * 0.9} // from react-native
+          height={220}
+          // yAxisLabel="$"
+          // yAxisSuffix="k"
+          yAxisInterval={1} // optional, defaults to 1
+          chartConfig={{
+            backgroundColor: COLORS.primary,
+            backgroundGradientFrom: COLORS.primary,
+            backgroundGradientTo: COLORS.secondary,
+            decimalPlaces: 2, // optional, defaults to 2dp
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            style: {
+              borderRadius: 16,
             },
-          ],
-        }}
-        width={SIZES.width * 0.9} // from react-native
-        height={220}
-        // yAxisLabel="$"
-        // yAxisSuffix="k"
-        yAxisInterval={1} // optional, defaults to 1
-        chartConfig={{
-          backgroundColor: COLORS.primary,
-          backgroundGradientFrom: COLORS.primary,
-          backgroundGradientTo: COLORS.secondary,
-          decimalPlaces: 2, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          style: {
+            propsForDots: {
+              r: '6',
+              strokeWidth: '2',
+              stroke: '#ffa726',
+            },
+          }}
+          bezier
+          style={{
+            marginVertical: 8,
             borderRadius: 16,
-          },
-          propsForDots: {
-            r: '6',
-            strokeWidth: '2',
-            stroke: '#ffa726',
-          },
-        }}
-        bezier
-        style={{
-          marginVertical: 8,
-          borderRadius: 16,
-        }}
-      />
-      <ContributionGraph
-        values={[
-          {date: '2017-01-02', count: 1},
-          {date: '2017-01-03', count: 2},
-          {date: '2017-01-04', count: 3},
-          {date: '2017-01-05', count: 4},
-          {date: '2017-01-06', count: 5},
-          {date: '2017-01-30', count: 2},
-          {date: '2017-01-31', count: 3},
-          {date: '2017-03-01', count: 2},
-          {date: '2017-04-02', count: 4},
-          {date: '2017-03-05', count: 2},
-          {date: '2017-02-30', count: 4},
-        ]}
-        endDate={new Date('2017-04-01')}
-        numDays={105}
-        width={SIZES.width * 0.9}
-        height={220}
-        chartConfig={{
-          backgroundColor: COLORS.primary,
-          backgroundGradientFrom: COLORS.primary,
-          backgroundGradientTo: COLORS.secondary,
-          decimalPlaces: 2, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          style: {
-            borderRadius: 16,
-          },
-          propsForDots: {
-            r: '6',
-            strokeWidth: '2',
-            stroke: '#ffa726',
-          },
-        }}
-      />
+          }}
+        />
+      ) : null}
+      {resp && 2 === 2 ? (
+        <ContributionGraph
+          values={resp}
+          endDate={new Date('2017-04-01')}
+          numDays={105}
+          width={SIZES.width * 0.9}
+          height={220}
+          chartConfig={{
+            backgroundColor: COLORS.primary,
+            backgroundGradientFrom: COLORS.primary,
+            backgroundGradientTo: COLORS.secondary,
+            decimalPlaces: 2, // optional, defaults to 2dp
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            style: {
+              borderRadius: 16,
+            },
+            propsForDots: {
+              r: '6',
+              strokeWidth: '2',
+              stroke: '#ffa726',
+            },
+          }}
+        />
+      ) : null}
       <View style={styles.row}>
         <View>
           <View style={styles.rowFlex}>

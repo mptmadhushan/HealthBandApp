@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 
 import {icons, images, SIZES, COLORS, FONTS} from '../helpers';
@@ -12,7 +12,37 @@ import {
   ContributionGraph,
   StackedBarChart,
 } from 'react-native-chart-kit';
+import {getBlood} from '../api/getBlood';
+
 export default function Glucose() {
+  const [blood, setBlood] = useState();
+  const [blood2, setBlood2] = useState();
+
+  useEffect(() => {
+    getBlood()
+      .then(response => {
+        if (response.error) {
+          console.log('error', response.error);
+          // showToast(response.error);
+          return;
+        }
+        const {data} = response;
+        console.log(data);
+        const newArray = data.map(element => element.labels);
+        console.log(newArray); // [100, 200, 300]
+        const newArray2 = data.map(element => element.datasets);
+        console.log(newArray2); // [100, 200, 300]
+        setBlood(newArray);
+        setBlood2(newArray2);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+      .finally(() => {
+        // setLoading(false);
+      });
+    // handlePlay();
+  }, []);
   return (
     <LinearGradient
       colors={[COLORS.black, COLORS.primary, COLORS.black]}
@@ -21,49 +51,45 @@ export default function Glucose() {
       end={{x: 1, y: 0.5}}
       locations={[0, 0.7, 0.9]}>
       <Text style={styles.title}>Blood Pressure Info</Text>
-      <LineChart
-        data={{
-          labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-          datasets: [
-            {
-              data: [
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-                Math.random() * 100,
-              ],
+      {blood2 ? (
+        <LineChart
+          data={{
+            labels: blood,
+            datasets: [
+              {
+                data: blood2,
+                // data: ['65.32', '63.76', '56.46', '87.50', '76.34', '45.75'],
+              },
+            ],
+          }}
+          width={SIZES.width * 0.9} // from react-native
+          height={220}
+          // yAxisLabel="$"
+          // yAxisSuffix="k"
+          yAxisInterval={1} // optional, defaults to 1
+          chartConfig={{
+            backgroundColor: COLORS.primary,
+            backgroundGradientFrom: COLORS.primary,
+            backgroundGradientTo: COLORS.secondary,
+            decimalPlaces: 2, // optional, defaults to 2dp
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            style: {
+              borderRadius: 16,
             },
-          ],
-        }}
-        width={SIZES.width * 0.9} // from react-native
-        height={220}
-        // yAxisLabel="$"
-        // yAxisSuffix="k"
-        yAxisInterval={1} // optional, defaults to 1
-        chartConfig={{
-          backgroundColor: COLORS.primary,
-          backgroundGradientFrom: COLORS.primary,
-          backgroundGradientTo: COLORS.secondary,
-          decimalPlaces: 2, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          style: {
+            propsForDots: {
+              r: '6',
+              strokeWidth: '2',
+              stroke: '#ffa726',
+            },
+          }}
+          bezier
+          style={{
+            marginVertical: 8,
             borderRadius: 16,
-          },
-          propsForDots: {
-            r: '6',
-            strokeWidth: '2',
-            stroke: '#ffa726',
-          },
-        }}
-        bezier
-        style={{
-          marginVertical: 8,
-          borderRadius: 16,
-        }}
-      />
+          }}
+        />
+      ) : null}
       <ProgressChart
         data={{
           labels: ['Swim', 'Bike', 'Run'], // optional
@@ -158,13 +184,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    color: COLORS.black,
+    color: COLORS.white,
     fontWeight: 'bold',
     marginLeft: SIZES.width * 0.06,
+    marginTop: SIZES.width * 0.02,
     fontSize: 25,
   },
   title1: {
-    color: COLORS.black,
+    color: COLORS.white,
     fontWeight: 'bold',
     fontSize: 17,
     width: SIZES.width * 0.2,
