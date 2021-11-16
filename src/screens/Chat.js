@@ -10,71 +10,7 @@ import {icons, images, SIZES, COLORS, FONTS} from '../helpers';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {WebView} from 'react-native-webview';
 export default function Chat() {
-  return (
-    <WebView source={{uri: 'https://kosalaproject.000webhostapp.com/'}} />
-    // <View style={styles.container}>
-    //   {/* <View style={styles.bottom}>
-    //     <View style={styles.chatWindow}>
-    //       <View style={styles.rowFlex}>
-    //         <View style={styles.avatar}>
-    //           <Icon name="logo-ionitron" size={25} color={COLORS.black} />
-    //         </View>
-    //         <View style={styles.bot}>
-    //           <Text style={styles.text001}>Hi..</Text>
-    //         </View>
-    //       </View>
-    //       <View style={styles.rowFlex}>
-    //         <View style={styles.avatar}>
-    //           <Icon name="logo-ionitron" size={25} color={COLORS.black} />
-    //         </View>
-    //         <View style={styles.bot}>
-    //           <Text style={styles.text001}>How Can I help you?</Text>
-    //         </View>
-    //       </View>
-    //       <View style={styles.rowFlexUser}>
-    //         <View style={styles.userChat}>
-    //           <Text style={styles.text002}>What can you do?</Text>
-    //         </View>
-    //         <View style={styles.avatarUser}>
-    //           <Icon
-    //             name="ios-person-circle-outline"
-    //             size={25}
-    //             color={COLORS.black}
-    //           />
-    //         </View>
-    //       </View>
-    //     </View>
-    //     <View style={styles.rowFlex}>
-    //       <View style={styles.SectionStyle}>
-    //         <TextInput
-    //           style={[
-    //             styles.inputStyle,
-    //             //   passwordError ? styles.inputStyleError : '',
-    //           ]}
-    //           // onChangeText={UserPassword => setUserPassword(UserPassword)}
-    //           placeholder="Enter text.." //12345
-    //           placeholderTextColor={COLORS.white}
-    //           keyboardType="default"
-    //           // ref={passwordInputRef}
-    //           // onSubmitEditing={Keyboard.dismiss}
-    //           blurOnSubmit={false}
-    //           secureTextEntry={true}
-    //           underlineColorAndroid="#f000"
-    //           returnKeyType="next"
-    //         />
-    //       </View>
-    //       <TouchableOpacity
-    //         onPress={() => console.log('hello')}
-    //         style={styles.slide1}>
-    //         <View style={styles.rowFlex}>
-    //           <Text style={styles.text001}>Send</Text>
-    //           <Icon name="arrow-redo-outline" size={20} color={COLORS.white} />
-    //         </View>
-    //       </TouchableOpacity>
-    //     </View>
-    //   </View> */}
-    // </View>
-  );
+  return <WebView source={{uri: 'https://kosalaproject.000webhostapp.com/'}} />;
 }
 
 const styles = StyleSheet.create({

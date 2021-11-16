@@ -10,6 +10,7 @@ import Glucose from '../screens/Glucose';
 import BloodPre from '../screens/BloodPre';
 import Instruction from '../screens/Instruction';
 import SPO2 from '../screens/SPO2';
+import Activity from '../screens/Activity';
 import {TapGestureHandler} from 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
@@ -41,6 +42,11 @@ function MainStackNavigator() {
           name="LogIn"
           options={{headerShown: false}}
           component={LogIn}
+        />
+        <Stack.Screen
+          name="Activity"
+          options={{headerShown: false}}
+          component={Activity}
         />
         <Stack.Screen
           name="Glucose"

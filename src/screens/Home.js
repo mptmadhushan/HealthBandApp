@@ -31,7 +31,7 @@ export default function Home({navigation}) {
         </View>
         <View style={styles.rowNorm}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('PlanBuilderUpload')}
+            onPress={() => navigation.navigate('Activity')}
             style={styles.slide1}>
             <View style={styles.centerFlex}>
               <Image
@@ -42,7 +42,7 @@ export default function Home({navigation}) {
                   height: SIZES.width * 0.15,
                 }}
               />
-              <Text style={styles.text001}>Reminder</Text>
+              <Text style={styles.text001}>Activity</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -78,7 +78,7 @@ export default function Home({navigation}) {
         </View>
         <View style={styles.rowNorm2}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Instruction')}
+            // onPress={() => navigation.navigate('Instruction')}
             style={styles.slide1}>
             <View style={styles.centerFlex}>
               <Image
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   rowNorm: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     flexWrap: 'wrap',
     maxWidth: SIZES.width,
     marginTop: SIZES.height * 0.1,
