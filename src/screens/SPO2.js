@@ -21,6 +21,8 @@ export default function Glucose() {
   const [spo2d, setSpod2d] = useState();
   const [blood, setBlood] = useState();
   const [blood2, setBlood2] = useState();
+  const [spoAvg, setSpoAvg] = useState();
+
   useEffect(() => {
     getSPO2()
       .then(response => {
@@ -52,6 +54,9 @@ export default function Glucose() {
         const newArray2 = data.map(element => element.datasets);
         setBlood(newArray);
         setBlood2(newArray2);
+        let result = newArray2.map(i => Number(i));
+        console.log(result);
+        setSpoAvg(result);
       })
       .catch(error => {
         console.log(error);
@@ -150,7 +155,11 @@ export default function Glucose() {
         </View>
         <View style={styles.avgBox}>
           <Text style={styles.title2}>Your Average</Text>
-          <Text style={styles.title2}>97</Text>
+          {spoAvg ? (
+            <Text style={styles.title2}>
+              {spoAvg.reduce((a, b) => a + b, 0).toFixed(2)}
+            </Text>
+          ) : null}
         </View>
       </View>
     </LinearGradient>

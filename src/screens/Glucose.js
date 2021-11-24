@@ -17,7 +17,9 @@ import {getGlucose} from '../api/getGlucose';
 export default function Glucose() {
   const [glucose, setGlucose] = useState();
   const [glucose2, setGlucose2] = useState();
-
+  const [glucoseAvg, setglucoseAvg] = useState();
+  const [glucoseMax, setglucoseMax] = useState();
+  const [glucoseMin, setglucoseMin] = useState();
   useEffect(() => {
     getGlucose()
       .then(response => {
@@ -34,6 +36,11 @@ export default function Glucose() {
         console.log(newArray2); // [100, 200, 300]
         setGlucose(newArray);
         setGlucose2(newArray2);
+        let result = newArray2.map(i => Number(i));
+        console.log(result);
+        setglucoseAvg(result);
+        setglucoseMax(Math.max(...result));
+        setglucoseMin(Math.min(...result));
       })
       .catch(error => {
         console.log(error);
@@ -50,7 +57,7 @@ export default function Glucose() {
       start={{x: 0, y: 0.5}}
       end={{x: 1, y: 0.5}}
       locations={[0, 0.7, 0.9]}>
-      <Text style={styles.title}>Blood Glucose Info</Text>
+      <Text style={styles.title}>glucose Glucose Info</Text>
       {glucose2 ? (
         <LineChart
           data={{
@@ -121,30 +128,33 @@ export default function Glucose() {
         }}
       />
       <View style={styles.row}>
-        <View>
-          <View style={styles.rowFlex}>
-            <Text style={styles.title1} />
-            <Text style={styles.title1}>Min</Text>
-            <Text style={styles.title1}>Max</Text>
+        {glucoseMax ? (
+          <View>
+            <View style={styles.rowFlex}>
+              <Text style={styles.title1}>Min</Text>
+              <Text style={styles.title1}>{glucoseMin}</Text>
+            </View>
+            <View style={styles.rowFlex}>
+              <Text style={styles.title1}>Normal</Text>
+              <Text style={styles.title1}>
+                {glucoseAvg
+                  .reduce((p, c, _, a) => p + c / a.length, 0)
+                  .toFixed(2)}
+              </Text>
+            </View>
+            <View style={styles.rowFlex}>
+              <Text style={styles.title1}>Danger</Text>
+              <Text style={styles.title1}>{glucoseMax}</Text>
+            </View>
           </View>
-          <View style={styles.rowFlex}>
-            <Text style={styles.title1}>Normal</Text>
-            <Text style={styles.title1}>60</Text>
-            <Text style={styles.title1}>70</Text>
-          </View>
-          <View style={styles.rowFlex}>
-            <Text style={styles.title1}>Medium</Text>
-            <Text style={styles.title1}>60</Text>
-            <Text style={styles.title1}>70</Text>
-          </View>
-          <View style={styles.rowFlex}>
-            <Text style={styles.title1}>High</Text>
-            <Text style={styles.title1}> {'>'}120</Text>
-          </View>
-        </View>
+        ) : null}
         <View style={styles.avgBox}>
           <Text style={styles.title2}>Your Average</Text>
-          <Text style={styles.title2}>109</Text>
+          {glucoseAvg ? (
+            <Text style={styles.title2}>
+              {glucoseAvg.reduce((a, b) => a + b, 0).toFixed(2)}
+            </Text>
+          ) : null}
         </View>
       </View>
     </LinearGradient>

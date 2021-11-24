@@ -8,8 +8,9 @@ import {LineChart, ProgressChart} from 'react-native-chart-kit';
 import {getGlucose} from '../api/getGlucose';
 
 export default function Glucose({navigation}) {
-  const [glucose, setGlucose] = useState();
+  const [bicycle, setBicy] = useState([0.4, 0.6, 0.8]);
   const [glucose2, setGlucose2] = useState();
+  const [glucose, setGlucose] = useState();
 
   useEffect(() => {
     getGlucose()
@@ -44,37 +45,39 @@ export default function Glucose({navigation}) {
       end={{x: 1, y: 0.5}}
       locations={[0, 0.7, 0.9]}>
       <Text style={styles.title}>Daily Activity 🏃‍♂️</Text>
-      <ProgressChart
-        data={{
-          labels: ['Swim', 'Bike', 'Run'],
-          data: [0.4, 0.6, 0.8],
-        }}
-        width={SIZES.width * 0.9}
-        height={220}
-        strokeWidth={16}
-        radius={32}
-        chartConfig={{
-          backgroundColor: COLORS.primary,
-          backgroundGradientFrom: COLORS.primary,
-          backgroundGradientTo: COLORS.secondary,
-          decimalPlaces: 2, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          style: {
+      {bicycle ? (
+        <ProgressChart
+          data={{
+            labels: ['Swim', 'Bike', 'Run'],
+            data: bicycle,
+          }}
+          width={SIZES.width * 0.9}
+          height={220}
+          strokeWidth={16}
+          radius={32}
+          chartConfig={{
+            backgroundColor: COLORS.primary,
+            backgroundGradientFrom: COLORS.primary,
+            backgroundGradientTo: COLORS.secondary,
+            decimalPlaces: 2, // optional, defaults to 2dp
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            style: {
+              borderRadius: 16,
+            },
+            propsForDots: {
+              r: '6',
+              strokeWidth: '2',
+              stroke: '#ffa726',
+            },
+          }}
+          hideLegend={false}
+          style={{
+            marginVertical: 8,
             borderRadius: 16,
-          },
-          propsForDots: {
-            r: '6',
-            strokeWidth: '2',
-            stroke: '#ffa726',
-          },
-        }}
-        hideLegend={false}
-        style={{
-          marginVertical: 8,
-          borderRadius: 16,
-        }}
-      />
+          }}
+        />
+      ) : null}
 
       <View style={styles.rowNorm}>
         <TouchableOpacity
@@ -149,7 +152,7 @@ export default function Glucose({navigation}) {
         </View>
         <View style={styles.avgBox}>
           <Text style={styles.title2}>Your Average</Text>
-          <Text style={styles.title2}>109</Text>
+          {<Text style={styles.title2}>109</Text>}
         </View>
       </View>
     </LinearGradient>

@@ -17,6 +17,9 @@ import {getBlood} from '../api/getBlood';
 export default function Glucose() {
   const [blood, setBlood] = useState();
   const [blood2, setBlood2] = useState();
+  const [bloodAvg, setBloodAvg] = useState();
+  const [bloodMax, setBloodMax] = useState();
+  const [bloodMin, setBloodMin] = useState();
 
   useEffect(() => {
     getBlood()
@@ -34,6 +37,11 @@ export default function Glucose() {
         console.log(newArray2); // [100, 200, 300]
         setBlood(newArray);
         setBlood2(newArray2);
+        let result = newArray2.map(i => Number(i));
+        console.log(result);
+        setBloodAvg(result);
+        setBloodMax(Math.max(...result));
+        setBloodMin(Math.min(...result));
       })
       .catch(error => {
         console.log(error);
@@ -122,23 +130,33 @@ export default function Glucose() {
         }}
       />
       <View style={styles.row}>
-        <View>
-          <View style={styles.rowFlex}>
-            <Text style={styles.title1}>Normal</Text>
-            <Text style={styles.title1}>160 / 190</Text>
+        {bloodMax ? (
+          <View>
+            <View style={styles.rowFlex}>
+              <Text style={styles.title1}>Min</Text>
+              <Text style={styles.title1}>{bloodMin}</Text>
+            </View>
+            <View style={styles.rowFlex}>
+              <Text style={styles.title1}>Normal</Text>
+              <Text style={styles.title1}>
+                {bloodAvg
+                  .reduce((p, c, _, a) => p + c / a.length, 0)
+                  .toFixed(2)}
+              </Text>
+            </View>
+            <View style={styles.rowFlex}>
+              <Text style={styles.title1}>Danger</Text>
+              <Text style={styles.title1}>{bloodMax}</Text>
+            </View>
           </View>
-          <View style={styles.rowFlex}>
-            <Text style={styles.title1}>High</Text>
-            <Text style={styles.title1}>60 / 149</Text>
-          </View>
-          <View style={styles.rowFlex}>
-            <Text style={styles.title1}>Danger</Text>
-            <Text style={styles.title1}>120 / 110</Text>
-          </View>
-        </View>
+        ) : null}
         <View style={styles.avgBox}>
           <Text style={styles.title2}>Your Average</Text>
-          <Text style={styles.title2}>109</Text>
+          {bloodAvg ? (
+            <Text style={styles.title2}>
+              {bloodAvg.reduce((a, b) => a + b, 0).toFixed(2)}
+            </Text>
+          ) : null}
         </View>
       </View>
     </LinearGradient>
