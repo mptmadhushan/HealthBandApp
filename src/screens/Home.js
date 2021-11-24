@@ -11,10 +11,25 @@ import {
 import {icons, images, SIZES, COLORS, FONTS} from '../helpers';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
+import {useDispatch} from 'react-redux';
+import {authLogout} from '../redux/authSlice';
+import {clearUserToken} from '../shared/asyncStorage';
 
 export default function Home({navigation}) {
   useEffect(() => {}, []);
 
+  const dispatch = useDispatch();
+
+  const logOut = () => {
+    dispatch(authLogout());
+    clearUserToken()
+      .then(() => {
+        navigation.navigate('OnBoard');
+      })
+      .catch(() => {
+        console.log('Handle me properly! Error clearing user token');
+      });
+  };
   return (
     <ImageBackground
       style={styles.container}
@@ -78,7 +93,7 @@ export default function Home({navigation}) {
         </View>
         <View style={styles.rowNorm2}>
           <TouchableOpacity
-            // onPress={() => navigation.navigate('Instruction')}
+            onPress={() => navigation.navigate('Instruction')}
             style={styles.slide1}>
             <View style={styles.centerFlex}>
               <Image
@@ -123,6 +138,12 @@ export default function Home({navigation}) {
             </View>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity
+          style={styles.buttonStyle}
+          activeOpacity={0.5}
+          onPress={() => logOut()}>
+          <Text style={styles.buttonTextStyle}>Log Out</Text>
+        </TouchableOpacity>
       </LinearGradient>
     </ImageBackground>
   );
@@ -196,5 +217,24 @@ const styles = StyleSheet.create({
     marginTop: SIZES.height * 0.02,
     marginLeft: SIZES.width * 0.06,
     marginRight: SIZES.width * 0.06,
+  },
+  buttonStyle: {
+    backgroundColor: '#00BFA6',
+    borderWidth: 0,
+    color: '#FFFFFF',
+    borderColor: '#00BFA6',
+    height: 40,
+    alignItems: 'center',
+    borderRadius: 30,
+    marginLeft: 35,
+    marginRight: 35,
+    marginTop: 20,
+    marginBottom: 25,
+  },
+  buttonTextStyle: {
+    fontFamily: 'Oh Whale - TTF',
+    color: '#FFFFFF',
+    paddingVertical: 10,
+    fontSize: 16,
   },
 });
