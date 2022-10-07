@@ -6,8 +6,8 @@ import LogIn from '../screens/LogIn';
 import Home from '../screens/Home';
 import Register from '../screens/Register';
 import Chat from '../screens/Chat';
-import Glucose from '../screens/Glucose';
-import BloodPre from '../screens/BloodPre';
+import Humidity from '../screens/Humidity';
+import Water from '../screens/Water';
 import Instruction from '../screens/Instruction';
 import SPO2 from '../screens/SPO2';
 import Activity from '../screens/Activity';
@@ -49,9 +49,9 @@ function MainStackNavigator() {
           component={Activity}
         />
         <Stack.Screen
-          name="Glucose"
+          name="Humidity"
           options={{headerShown: false}}
-          component={Glucose}
+          component={Humidity}
         />
         <Stack.Screen
           name="Register"
@@ -64,9 +64,9 @@ function MainStackNavigator() {
           component={Chat}
         />
         <Stack.Screen
-          name="BloodPre"
+          name="Water"
           options={{headerShown: false}}
-          component={BloodPre}
+          component={Water}
         />
         <Stack.Screen
           name="SPO2"

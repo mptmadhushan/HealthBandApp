@@ -49,6 +49,8 @@ const LoginScreen = ({navigation}) => {
     Toast.showWithGravity(message, Toast.SHORT, Toast.TOP);
   };
   const onPressLogin = () => {
+    navigation.navigate('Home');
+
     const payload = {
       username: userEmail,
       password: userPassword,
@@ -85,7 +87,7 @@ const LoginScreen = ({navigation}) => {
   return (
     <ImageBackground
       style={styles.mainBody}
-      source={require('../assets/images/regBg.jpeg')}>
+      source={require('../assets/backlg.png')}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{

@@ -15,7 +15,7 @@ import {
 import {getSPO2} from '../api/getSPO2';
 import {getBlood} from '../api/getBlood';
 
-export default function Glucose() {
+export default function Humidity() {
   const [spo2, setSpo2] = useState();
   const [resp, setResp] = useState();
   const [spo2d, setSpod2d] = useState();

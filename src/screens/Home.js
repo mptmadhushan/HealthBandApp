@@ -41,14 +41,14 @@ export default function Home({navigation}) {
           style={{
             marginTop: SIZES.height * 0.15,
           }}>
-          <Text style={styles.title2}>Hello Jeffry!</Text>
+          <Text style={styles.title2}>Hello Kareem!</Text>
           <Text style={styles.title1}>What's new today?</Text>
         </View>
         <View style={styles.rowNorm}>
           <TouchableOpacity
             onPress={() => navigation.navigate('Activity')}
             style={styles.slide1}>
-            <View style={styles.centerFlex}>
+            <View style={styles.rowNw}>
               <Image
                 source={require('../assets/reminder.png')}
                 resizeMode="contain"
@@ -57,41 +57,41 @@ export default function Home({navigation}) {
                   height: SIZES.width * 0.15,
                 }}
               />
-              <Text style={styles.text001}>Activity</Text>
+              <Text style={styles.text001}>Analyze</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate('BloodPre')}
+            onPress={() => navigation.navigate('Water')}
             style={styles.slide1}>
-            <View style={styles.centerFlex}>
+            <View style={styles.rowNw}>
               <Image
-                source={require('../assets/blood.png')}
+                source={require('../assets/water.png')}
                 resizeMode="contain"
                 style={{
                   width: SIZES.width * 0.15,
                   height: SIZES.width * 0.15,
                 }}
               />
-              <Text style={styles.text001}>Blood pressure</Text>
+              <Text style={styles.text001}>Water</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Glucose')}
+            onPress={() => navigation.navigate('Humidity')}
             style={styles.slide1}>
-            <View style={styles.centerFlex}>
+            <View style={styles.rowNw}>
               <Image
-                source={require('../assets/glu.png')}
+                source={require('../assets/humi.png')}
                 resizeMode="contain"
                 style={{
                   width: SIZES.width * 0.15,
                   height: SIZES.width * 0.15,
                 }}
               />
-              <Text style={styles.text001}>Glucose Info</Text>
+              <Text style={styles.text001}>Humidity</Text>
             </View>
           </TouchableOpacity>
         </View>
-        <View style={styles.rowNorm2}>
+        {/* <View style={styles.rowNorm2}>
           <TouchableOpacity
             onPress={() => navigation.navigate('Instruction')}
             style={styles.slide1}>
@@ -137,7 +137,7 @@ export default function Home({navigation}) {
               <Text style={styles.text001}>SPO2 Info</Text>
             </View>
           </TouchableOpacity>
-        </View>
+        </View> */}
         <TouchableOpacity
           style={styles.buttonStyle}
           activeOpacity={0.5}
@@ -152,15 +152,15 @@ const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: COLORS.black},
   slide1: {
     // backgroundColor: COLORS.secondary,
-    borderColor: COLORS.secondary,
-    borderWidth: 0.6,
-    borderRadius: 10,
+    // borderColor: COLORS.primary,
+    // borderWidth: 0.6,
+    // borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 2,
     flex: 1,
-    maxWidth: SIZES.width * 0.27,
-    height: SIZES.width * 0.25,
+    width: SIZES.width * 0.9,
+    height: SIZES.height * 0.25,
     shadowColor: COLORS.secondary,
     shadowOffset: {
       width: 1,
@@ -199,14 +199,22 @@ const styles = StyleSheet.create({
     marginLeft: SIZES.width * 0.06,
   },
   rowNorm: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-around',
     flexWrap: 'wrap',
     maxWidth: SIZES.width,
+    flex: 1,
     marginTop: SIZES.height * 0.1,
     marginLeft: SIZES.width * 0.06,
     marginRight: SIZES.width * 0.06,
+  },
+  rowNw: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    flex: 1,
+    width: SIZES.width * 0.7,
   },
   rowNorm2: {
     flexDirection: 'row',
@@ -219,7 +227,7 @@ const styles = StyleSheet.create({
     marginRight: SIZES.width * 0.06,
   },
   buttonStyle: {
-    backgroundColor: '#00BFA6',
+    backgroundColor: '#8C3FB7',
     borderWidth: 0,
     color: '#FFFFFF',
     borderColor: '#00BFA6',
@@ -229,7 +237,7 @@ const styles = StyleSheet.create({
     marginLeft: 35,
     marginRight: 35,
     marginTop: 20,
-    marginBottom: 25,
+    marginBottom: 50,
   },
   buttonTextStyle: {
     fontFamily: 'Oh Whale - TTF',

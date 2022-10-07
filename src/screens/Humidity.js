@@ -12,17 +12,16 @@ import {
   ContributionGraph,
   StackedBarChart,
 } from 'react-native-chart-kit';
-import {getBlood} from '../api/getBlood';
+import {getGlucose} from '../api/getGlucose';
 
-export default function Glucose() {
-  const [blood, setBlood] = useState();
-  const [blood2, setBlood2] = useState();
-  const [bloodAvg, setBloodAvg] = useState();
-  const [bloodMax, setBloodMax] = useState();
-  const [bloodMin, setBloodMin] = useState();
-
+export default function Humidity() {
+  const [glucose, setGlucose] = useState();
+  const [glucose2, setGlucose2] = useState();
+  const [glucoseAvg, setglucoseAvg] = useState();
+  const [glucoseMax, setglucoseMax] = useState();
+  const [glucoseMin, setglucoseMin] = useState();
   useEffect(() => {
-    getBlood()
+    getGlucose()
       .then(response => {
         if (response.error) {
           console.log('error', response.error);
@@ -35,13 +34,13 @@ export default function Glucose() {
         console.log(newArray); // [100, 200, 300]
         const newArray2 = data.map(element => element.datasets);
         console.log(newArray2); // [100, 200, 300]
-        setBlood(newArray);
-        setBlood2(newArray2);
+        setGlucose(newArray);
+        setGlucose2(newArray2);
         let result = newArray2.map(i => Number(i));
         console.log(result);
-        setBloodAvg(result);
-        setBloodMax(Math.max(...result));
-        setBloodMin(Math.min(...result));
+        setglucoseAvg(result);
+        setglucoseMax(Math.max(...result));
+        setglucoseMin(Math.min(...result));
       })
       .catch(error => {
         console.log(error);
@@ -58,15 +57,14 @@ export default function Glucose() {
       start={{x: 0, y: 0.5}}
       end={{x: 1, y: 0.5}}
       locations={[0, 0.7, 0.9]}>
-      <Text style={styles.title}>Blood Pressure Info</Text>
-      {blood2 ? (
+      <Text style={styles.title}>Humidity</Text>
+      {glucose2 ? (
         <LineChart
           data={{
-            labels: blood,
+            labels: glucose,
             datasets: [
               {
-                data: blood2,
-                // data: ['65.32', '63.76', '56.46', '87.50', '76.34', '45.75'],
+                data: glucose2,
               },
             ],
           }}
@@ -100,13 +98,13 @@ export default function Glucose() {
       ) : null}
       <ProgressChart
         data={{
-          labels: ['Swim', 'Bike', 'Run'], // optional
-          data: [0.4, 0.6, 0.8],
+          labels: ['Humidity'], // optional
+          data: [0.6],
         }}
         width={SIZES.width * 0.9}
         height={220}
         strokeWidth={16}
-        radius={32}
+        radius={62}
         chartConfig={{
           backgroundColor: COLORS.primary,
           backgroundGradientFrom: COLORS.primary,
@@ -130,33 +128,33 @@ export default function Glucose() {
         }}
       />
       <View style={styles.row}>
-        {bloodMax ? (
+        {glucoseMax ? (
           <View>
             <View style={styles.rowFlex}>
               <Text style={styles.title1}>Min</Text>
-              <Text style={styles.title1}>{bloodMin}</Text>
+              <Text style={styles.title1}>{glucoseMin}</Text>
             </View>
             <View style={styles.rowFlex}>
               <Text style={styles.title1}>Normal</Text>
               <Text style={styles.title1}>
-                {bloodAvg
+                {glucoseAvg
                   .reduce((p, c, _, a) => p + c / a.length, 0)
                   .toFixed(2)}
               </Text>
             </View>
             <View style={styles.rowFlex}>
-              <Text style={styles.title1}>Danger</Text>
-              <Text style={styles.title1}>{bloodMax}</Text>
+              <Text style={styles.title1}>Max</Text>
+              <Text style={styles.title1}>{glucoseMax}</Text>
             </View>
           </View>
         ) : null}
         <View style={styles.avgBox}>
-          <Text style={styles.title2}>Your Average</Text>
-          {bloodAvg ? (
+          <Text style={styles.title2}>Insufficient Water Level</Text>
+          {/* {glucoseAvg ? (
             <Text style={styles.title2}>
-              {bloodAvg.reduce((a, b) => a + b, 0).toFixed(2)}
+              {glucoseAvg.reduce((a, b) => a + b, 0).toFixed(2)}
             </Text>
-          ) : null}
+          ) : null} */}
         </View>
       </View>
     </LinearGradient>
@@ -174,19 +172,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     alignContent: 'flex-start',
-    // width: SIZES.width * 0.5,
-    marginRight: SIZES.width * 0.15,
-    borderBottomWidth: 1,
-    borderColor: COLORS.secondary,
-    marginTop: SIZES.width * 0.04,
-    shadowColor: COLORS.secondary,
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 0.84,
-    elevation: 15,
+    width: SIZES.width * 0.6,
   },
   avgBox: {
     justifyContent: 'center',
@@ -211,7 +197,7 @@ const styles = StyleSheet.create({
   title1: {
     color: COLORS.white,
     fontWeight: 'bold',
-    fontSize: 17,
+    fontSize: 15,
     width: SIZES.width * 0.2,
   },
   title2: {

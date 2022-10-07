@@ -7,7 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {LineChart, ProgressChart} from 'react-native-chart-kit';
 import {getGlucose} from '../api/getGlucose';
 
-export default function Glucose({navigation}) {
+export default function Humidity({navigation}) {
   const [bicycle, setBicy] = useState([0.4, 0.6, 0.8]);
   const [glucose2, setGlucose2] = useState();
   const [glucose, setGlucose] = useState();
@@ -44,11 +44,58 @@ export default function Glucose({navigation}) {
       start={{x: 0, y: 0.5}}
       end={{x: 1, y: 0.5}}
       locations={[0, 0.7, 0.9]}>
-      <Text style={styles.title}>Daily Activity 🏃‍♂️</Text>
+      <Text style={styles.title}>Analyze</Text>
+      <View style={styles.rowNorm}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Activity')}
+          style={styles.slide1}>
+          <View style={styles.centerFlex}>
+            <Image
+              source={require('../assets/humi.png')}
+              resizeMode="contain"
+              style={{
+                width: SIZES.width * 0.15,
+                height: SIZES.width * 0.15,
+              }}
+            />
+            <Text style={styles.text001}>Humidity</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Water')}
+          style={styles.slide1}>
+          <View style={styles.centerFlex}>
+            <Image
+              source={require('../assets/swim.png')}
+              resizeMode="contain"
+              style={{
+                width: SIZES.width * 0.15,
+                height: SIZES.width * 0.15,
+              }}
+            />
+            <Text style={styles.text001}>Temp</Text>
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('Humidity')}
+          style={styles.slide1}>
+          <View style={styles.centerFlex}>
+            <Image
+              source={require('../assets/water.png')}
+              resizeMode="contain"
+              style={{
+                width: SIZES.width * 0.15,
+                height: SIZES.width * 0.15,
+              }}
+            />
+            <Text style={styles.text001}>Water</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
       {bicycle ? (
         <ProgressChart
           data={{
-            labels: ['Swim', 'Bike', 'Run'],
+            labels: ['Water', 'Humidity', 'Temp'],
             data: bicycle,
           }}
           width={SIZES.width * 0.9}
@@ -64,6 +111,7 @@ export default function Glucose({navigation}) {
             labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
             style: {
               borderRadius: 16,
+              marginTop: 49,
             },
             propsForDots: {
               r: '6',
@@ -78,55 +126,6 @@ export default function Glucose({navigation}) {
           }}
         />
       ) : null}
-
-      <View style={styles.rowNorm}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Activity')}
-          style={styles.slide1}>
-          <View style={styles.centerFlex}>
-            <Image
-              source={require('../assets/bicy.png')}
-              resizeMode="contain"
-              style={{
-                width: SIZES.width * 0.15,
-                height: SIZES.width * 0.15,
-              }}
-            />
-            <Text style={styles.text001}>Bicycle</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('BloodPre')}
-          style={styles.slide1}>
-          <View style={styles.centerFlex}>
-            <Image
-              source={require('../assets/swim.png')}
-              resizeMode="contain"
-              style={{
-                width: SIZES.width * 0.15,
-                height: SIZES.width * 0.15,
-              }}
-            />
-            <Text style={styles.text001}>Swim</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('Glucose')}
-          style={styles.slide1}>
-          <View style={styles.centerFlex}>
-            <Image
-              source={require('../assets/run.png')}
-              resizeMode="contain"
-              style={{
-                width: SIZES.width * 0.15,
-                height: SIZES.width * 0.15,
-              }}
-            />
-            <Text style={styles.text001}>Run</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.text001}>Tap item to add</Text>
 
       <View style={styles.row}>
         <View>
